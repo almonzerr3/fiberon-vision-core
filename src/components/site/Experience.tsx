@@ -113,8 +113,11 @@ export function Experience() {
             <span className="label-mono">Camera study</span>
           </div>
           <h2 className="mt-2 font-display text-lg font-semibold">{detail.title}</h2>
-          <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{detail.note}</p>
-          <dl className="mt-3 border-t border-border pt-3">
+          <p className="mt-1.5 hidden text-xs leading-relaxed text-muted-foreground sm:block">
+            {detail.note}
+          </p>
+          <dl className="mt-3 hidden border-t border-border pt-3 sm:block">
+
             {detail.spec.map(([k, v]) => (
               <div key={k} className="flex justify-between gap-4 py-1 text-[0.75rem]">
                 <dt className="text-muted-foreground">{k}</dt>
