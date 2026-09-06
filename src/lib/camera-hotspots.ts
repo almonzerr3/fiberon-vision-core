@@ -9,10 +9,10 @@
 export type HotspotKey = "lens" | "ir" | "housing" | "mount";
 
 export const HOTSPOT_ANCHORS: Record<HotspotKey, [number, number, number]> = {
-  lens: [0.0, 0.16, 1.34],
-  ir: [0.34, 0.42, 1.06],
-  housing: [-0.5, 0.22, -0.1],
-  mount: [0.12, -0.72, -0.6],
+  lens: [0.0, 0.32, 1.02],
+  ir: [0.42, 0.62, 0.88],
+  housing: [-0.42, 0.42, -0.35],
+  mount: [0.0, -0.42, -1.1],
 };
 
 export const HOTSPOTS: {
