@@ -103,14 +103,16 @@ export function CctvCamera({
           <torusGeometry args={[0.44, 0.016, 8, seg]} />
           <primitive object={m.trim} attach="material" />
         </mesh>
-        {[
-          [0.3, 0.3],
-          [-0.3, 0.3],
-          [0.3, -0.3],
-          [-0.3, -0.3],
-        ].map(([x, z], i) => (
+        {(
+          [
+            [0.3, 0.3],
+            [-0.3, 0.3],
+            [0.3, -0.3],
+            [-0.3, -0.3],
+          ] as [number, number][]
+        ).map(([x, z], i) => (
           <mesh key={i} position={[x, 0.05, z]} rotation-x={Math.PI / 2}>
-            <cylinderGeometry args={[0.035, 0.035, 0.05, 12]} rotation-x={Math.PI / 2} />
+            <cylinderGeometry args={[0.035, 0.035, 0.05, 12]} />
             <primitive object={m.bolt} attach="material" />
           </mesh>
         ))}

@@ -41,11 +41,9 @@ export function NetworkField({
     nodes.forEach((n, i) => {
       segs.push(n.p.x, n.p.y, n.p.z, core.x, core.y, core.z);
       if (i + rows < nodes.length) {
-        const q = nodes[i + rows].p;
+        const q = nodes[i + rows]!.p;
         segs.push(n.p.x, n.p.y, n.p.z, q.x, q.y, q.z);
       }
-      path.push(n.p.x, n.p.y, n.p.z);
-    });
     return {
       nodes,
       linePositions: new Float32Array(segs),
