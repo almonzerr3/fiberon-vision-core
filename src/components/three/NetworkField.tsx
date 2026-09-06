@@ -44,6 +44,8 @@ export function NetworkField({
         const q = nodes[i + rows]!.p;
         segs.push(n.p.x, n.p.y, n.p.z, q.x, q.y, q.z);
       }
+      path.push(n.p.x, n.p.y, n.p.z);
+    });
     return {
       nodes,
       linePositions: new Float32Array(segs),
