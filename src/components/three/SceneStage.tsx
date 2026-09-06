@@ -10,9 +10,11 @@ import { useIsMobile } from "@/hooks/use-mobile";
 function Rig({
   progress,
   pointer,
+  compact = false,
 }: {
   progress: React.RefObject<number>;
   pointer: React.RefObject<{ x: number; y: number }>;
+  compact?: boolean;
 }) {
   const { camera } = useThree();
   const target = useMemo(() => new THREE.Vector3(), []);
@@ -29,7 +31,7 @@ function Rig({
     const k = 1 - Math.exp(-3 * delta);
     camera.position.lerp(target, k);
     camera.lookAt(
-      THREE.MathUtils.lerp(-0.85, 0, pull),
+      THREE.MathUtils.lerp(compact ? -0.1 : -0.85, 0, pull),
       THREE.MathUtils.lerp(0.35, -0.1, pull),
       0,
     );
@@ -110,7 +112,7 @@ export function SceneStage({
       shadows={!isMobile}
       dpr={isMobile ? [1, 1.4] : [1, 2]}
       gl={{ antialias: !isMobile, powerPreference: "high-performance" }}
-      camera={{ position: [2.2, 1.2, 5.5], fov: isMobile ? 46 : 38 }}
+      camera={{ position: [2.2, 1.2, 5.5], fov: isMobile ? 52 : 38 }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.28;
@@ -153,9 +155,10 @@ export function SceneStage({
       <NetworkField progress={progress} lowDetail={isMobile} />
 
       {/* The camera study sits right of centre so hero copy keeps the left column. */}
-      <group position={[isMobile ? 0.1 : 0.4, isMobile ? -1.15 : 0.15, 0]}>
+      <group position={[isMobile ? 0.3 : 0.4, isMobile ? -0.85 : 0.15, 0]}>
         <CctvCamera pointer={pointer} lowDetail={isMobile} />
         {ready &&
+          !isMobile &&
           hotspotsVisible &&
           HOTSPOTS.map((h) => (
             <Hotspot
@@ -169,7 +172,7 @@ export function SceneStage({
           ))}
       </group>
 
-      <Rig progress={progress} pointer={pointer} />
+      <Rig progress={progress} pointer={pointer} compact={isMobile} />
       <AdaptiveDpr pixelated />
     </Canvas>
   );
