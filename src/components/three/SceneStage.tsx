@@ -165,3 +165,5 @@ export function SceneStage({
     </Canvas>
   );
 }
+
+export default SceneStage;
