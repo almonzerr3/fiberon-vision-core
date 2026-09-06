@@ -38,11 +38,11 @@ function useMaterials() {
       clearcoatRoughness: 0.04,
     });
     const irLed = new THREE.MeshStandardMaterial({
-      color: "#241014",
+      color: "#1a1214",
       metalness: 0.2,
       roughness: 0.35,
-      emissive: new THREE.Color("#5c1420"),
-      emissiveIntensity: 0.5,
+      emissive: new THREE.Color("#3a0f16"),
+      emissiveIntensity: 0.22,
     });
     const cable = new THREE.MeshStandardMaterial({
       color: "#101315",
@@ -75,147 +75,142 @@ export function CctvCamera({
     head.current.rotation.x += (targetX - head.current.rotation.x) * k;
   });
 
-  const irRing = useMemo(
-    () =>
-      Array.from({ length: lowDetail ? 6 : 10 }, (_, i) => {
-        const a = (i / (lowDetail ? 6 : 10)) * Math.PI * 2;
-        return [Math.cos(a) * 0.315, Math.sin(a) * 0.315] as const;
-      }),
-    [lowDetail],
-  );
+  const irRing = useMemo(() => {
+    const n = lowDetail ? 8 : 12;
+    return Array.from({ length: n }, (_, i) => {
+      const a = (i / n) * Math.PI * 2;
+      return [Math.cos(a) * 0.3, Math.sin(a) * 0.3] as [number, number];
+    });
+  }, [lowDetail]);
 
   return (
     <group>
-      {/* wall plate + bracket ------------------------------------------- */}
-      <group position={[0, -0.95, -0.75]}>
+      {/* wall plate ------------------------------------------------------ */}
+      <group position={[0, -0.4, -1.6]} rotation-x={Math.PI / 2}>
         <mesh castShadow receiveShadow>
-          <cylinderGeometry args={[0.5, 0.5, 0.07, seg]} />
+          <cylinderGeometry args={[0.42, 0.42, 0.08, seg]} />
           <primitive object={m.housing} attach="material" />
         </mesh>
-        <mesh position={[0, 0.055, 0]}>
-          <torusGeometry args={[0.44, 0.016, 8, seg]} />
+        <mesh position={[0, 0.045, 0]}>
+          <torusGeometry args={[0.37, 0.014, 8, seg]} />
           <primitive object={m.trim} attach="material" />
         </mesh>
         {(
           [
-            [0.3, 0.3],
-            [-0.3, 0.3],
-            [0.3, -0.3],
-            [-0.3, -0.3],
+            [0.25, 0.25],
+            [-0.25, 0.25],
+            [0.25, -0.25],
+            [-0.25, -0.25],
           ] as [number, number][]
         ).map(([x, z], i) => (
-          <mesh key={i} position={[x, 0.05, z]} rotation-x={Math.PI / 2}>
-            <cylinderGeometry args={[0.035, 0.035, 0.05, 12]} />
+          <mesh key={i} position={[x, 0.055, z]}>
+            <cylinderGeometry args={[0.032, 0.032, 0.04, 12]} />
             <primitive object={m.bolt} attach="material" />
           </mesh>
         ))}
-        {/* cable gland */}
-        <mesh position={[0, -0.06, 0]}>
-          <cylinderGeometry args={[0.09, 0.11, 0.16, 16]} />
-          <primitive object={m.trim} attach="material" />
-        </mesh>
-        <mesh position={[0, -0.28, 0]}>
-          <cylinderGeometry args={[0.055, 0.055, 0.34, 12]} />
-          <primitive object={m.cable} attach="material" />
-        </mesh>
       </group>
+
+      {/* cable gland + drop loop ----------------------------------------- */}
+      <mesh position={[0, -0.4, -1.48]} rotation-x={Math.PI / 2}>
+        <cylinderGeometry args={[0.075, 0.095, 0.16, 16]} />
+        <primitive object={m.trim} attach="material" />
+      </mesh>
+      <mesh position={[0, -0.62, -1.5]}>
+        <cylinderGeometry args={[0.045, 0.045, 0.45, 12]} />
+        <primitive object={m.cable} attach="material" />
+      </mesh>
 
       {/* arm ------------------------------------------------------------- */}
-      <group position={[0, -0.5, -0.6]}>
-        <mesh position={[0, 0.02, 0]} rotation-z={0} castShadow>
-          <cylinderGeometry args={[0.13, 0.16, 0.62, seg / 2]} />
-          <primitive object={m.housing} attach="material" />
-        </mesh>
-        <mesh position={[0, 0.36, 0.06]} rotation-x={0.5} castShadow>
-          <cylinderGeometry args={[0.12, 0.12, 0.42, seg / 2]} />
-          <primitive object={m.housing} attach="material" />
-        </mesh>
-        {/* knuckle joint */}
-        <mesh position={[0, 0.56, 0.16]} rotation-z={Math.PI / 2}>
-          <cylinderGeometry args={[0.17, 0.17, 0.26, seg / 2]} />
-          <primitive object={m.shield} attach="material" />
-        </mesh>
-        <mesh position={[0.14, 0.56, 0.16]} rotation-z={Math.PI / 2}>
-          <cylinderGeometry args={[0.06, 0.06, 0.06, 12]} />
+      <mesh position={[0, -0.4, -1.05]} rotation-x={Math.PI / 2} castShadow>
+        <cylinderGeometry args={[0.12, 0.14, 0.95, seg / 2]} />
+        <primitive object={m.housing} attach="material" />
+      </mesh>
+      <mesh position={[0, -0.4, -0.56]} castShadow>
+        <sphereGeometry args={[0.16, seg / 2, seg / 3]} />
+        <primitive object={m.shield} attach="material" />
+      </mesh>
+      <mesh position={[0, -0.24, -0.5]} rotation-x={-0.22} castShadow>
+        <cylinderGeometry args={[0.1, 0.11, 0.42, seg / 2]} />
+        <primitive object={m.housing} attach="material" />
+      </mesh>
+      {/* tilt knuckle under the barrel */}
+      <mesh position={[0, -0.02, -0.44]} rotation-z={Math.PI / 2}>
+        <cylinderGeometry args={[0.15, 0.15, 0.24, seg / 2]} />
+        <primitive object={m.shield} attach="material" />
+      </mesh>
+      {[0.13, -0.13].map((x) => (
+        <mesh key={x} position={[x, -0.02, -0.44]} rotation-z={Math.PI / 2}>
+          <cylinderGeometry args={[0.05, 0.05, 0.06, 12]} />
           <primitive object={m.bolt} attach="material" />
         </mesh>
-        <mesh position={[-0.14, 0.56, 0.16]} rotation-z={Math.PI / 2}>
-          <cylinderGeometry args={[0.06, 0.06, 0.06, 12]} />
-          <primitive object={m.bolt} attach="material" />
-        </mesh>
-      </group>
+      ))}
 
       {/* camera head ----------------------------------------------------- */}
-      <group ref={head} position={[0, 0.1, 0]}>
-        {/* main barrel, rotated to face +Z */}
+      <group ref={head} position={[0, 0.3, 0]}>
         <group rotation-x={Math.PI / 2}>
+          {/* barrel */}
           <mesh castShadow receiveShadow>
-            <cylinderGeometry args={[0.4, 0.4, 1.9, seg]} />
+            <cylinderGeometry args={[0.36, 0.36, 1.75, seg]} />
             <primitive object={m.housing} attach="material" />
           </mesh>
           {/* rear cap */}
-          <mesh position={[0, -0.98, 0]}>
-            <cylinderGeometry args={[0.41, 0.36, 0.1, seg]} />
+          <mesh position={[0, -0.9, 0]}>
+            <cylinderGeometry args={[0.37, 0.32, 0.1, seg]} />
             <primitive object={m.trim} attach="material" />
           </mesh>
-          {/* body seam rings */}
-          <mesh position={[0, 0.55, 0]}>
-            <torusGeometry args={[0.402, 0.012, 8, seg]} />
+          {/* seam rings */}
+          <mesh position={[0, 0.5, 0]}>
+            <torusGeometry args={[0.362, 0.011, 8, seg]} />
             <primitive object={m.trim} attach="material" />
           </mesh>
-          <mesh position={[0, -0.45, 0]}>
-            <torusGeometry args={[0.402, 0.012, 8, seg]} />
+          <mesh position={[0, -0.42, 0]}>
+            <torusGeometry args={[0.362, 0.011, 8, seg]} />
             <primitive object={m.trim} attach="material" />
           </mesh>
           {/* front bezel */}
-          <mesh position={[0, 0.96, 0]}>
-            <cylinderGeometry args={[0.43, 0.42, 0.12, seg]} />
+          <mesh position={[0, 0.88, 0]} castShadow>
+            <cylinderGeometry args={[0.39, 0.37, 0.12, seg]} />
             <primitive object={m.shield} attach="material" />
           </mesh>
-          {/* IR ring plate */}
-          <mesh position={[0, 1.015, 0]}>
-            <cylinderGeometry args={[0.41, 0.41, 0.02, seg]} />
+          {/* recessed IR / lens face */}
+          <mesh position={[0, 0.93, 0]}>
+            <cylinderGeometry args={[0.36, 0.36, 0.02, seg]} />
             <primitive object={m.trim} attach="material" />
           </mesh>
           {irRing.map(([x, z], i) => (
-            <mesh key={i} position={[x, 1.03, z]}>
-              <sphereGeometry args={[0.045, 12, 10]} />
+            <mesh key={i} position={[x, 0.945, z]}>
+              <cylinderGeometry args={[0.032, 0.032, 0.012, 10]} />
               <primitive object={m.irLed} attach="material" />
             </mesh>
           ))}
-          {/* lens housing + glass */}
-          <mesh position={[0, 1.02, 0]}>
-            <cylinderGeometry args={[0.22, 0.24, 0.09, seg]} />
+          {/* lens barrel + dome glass */}
+          <mesh position={[0, 0.95, 0]}>
+            <cylinderGeometry args={[0.19, 0.21, 0.08, seg]} />
             <primitive object={m.shield} attach="material" />
           </mesh>
-          <mesh position={[0, 1.075, 0]}>
-            <sphereGeometry args={[0.2, seg, seg / 2, 0, Math.PI * 2, 0, Math.PI / 2.4]} />
+          <mesh position={[0, 0.985, 0]}>
+            <sphereGeometry args={[0.175, seg, seg / 2, 0, Math.PI * 2, 0, Math.PI / 2.6]} />
             <primitive object={m.glass} attach="material" />
           </mesh>
         </group>
 
         {/* sun shield */}
-        <group position={[0, 0.34, 0.06]}>
+        <group position={[0, 0.3, 0.02]}>
           <mesh rotation-x={Math.PI / 2} castShadow>
             <cylinderGeometry
-              args={[0.47, 0.47, 1.7, seg, 1, true, Math.PI * 0.08, Math.PI * 0.84]}
+              args={[0.43, 0.43, 1.55, seg, 1, true, Math.PI * 0.1, Math.PI * 0.8]}
             />
             <primitive object={m.shield} attach="material" />
           </mesh>
-          {!lowDetail && (
-            <>
-              <mesh position={[0.2, 0.0, 0.1]} rotation-x={Math.PI / 2}>
-                <boxGeometry args={[0.012, 1.6, 0.05]} />
+          {!lowDetail &&
+            [0.18, -0.18].map((x) => (
+              <mesh key={x} position={[x, -0.02, 0.06]} rotation-x={Math.PI / 2}>
+                <boxGeometry args={[0.01, 1.45, 0.045]} />
                 <primitive object={m.trim} attach="material" />
               </mesh>
-              <mesh position={[-0.2, 0.0, 0.1]} rotation-x={Math.PI / 2}>
-                <boxGeometry args={[0.012, 1.6, 0.05]} />
-                <primitive object={m.trim} attach="material" />
-              </mesh>
-            </>
-          )}
-          <mesh position={[0, -0.08, -0.85]}>
-            <boxGeometry args={[0.34, 0.05, 0.14]} />
+            ))}
+          <mesh position={[0, -0.07, -0.78]}>
+            <boxGeometry args={[0.3, 0.045, 0.12]} />
             <primitive object={m.trim} attach="material" />
           </mesh>
         </group>
