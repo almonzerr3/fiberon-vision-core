@@ -110,7 +110,7 @@ export function SceneStage({
       shadows={!isMobile}
       dpr={isMobile ? [1, 1.4] : [1, 2]}
       gl={{ antialias: !isMobile, powerPreference: "high-performance" }}
-      camera={{ position: [2.2, 1.2, 5.5], fov: 38 }}
+      camera={{ position: [2.2, 1.2, 5.5], fov: isMobile ? 46 : 38 }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.28;
@@ -153,7 +153,7 @@ export function SceneStage({
       <NetworkField progress={progress} lowDetail={isMobile} />
 
       {/* The camera study sits right of centre so hero copy keeps the left column. */}
-      <group position={[isMobile ? 0 : 0.4, isMobile ? 0 : 0.15, 0]}>
+      <group position={[isMobile ? 0.1 : 0.4, isMobile ? -1.15 : 0.15, 0]}>
         <CctvCamera pointer={pointer} lowDetail={isMobile} />
         {ready &&
           hotspotsVisible &&

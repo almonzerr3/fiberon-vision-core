@@ -68,7 +68,7 @@ export function Experience() {
 
         {/* Hero copy */}
         <div
-          className="pointer-events-none absolute inset-0 mx-auto flex max-w-[1400px] flex-col justify-center px-5 sm:px-8"
+          className="pointer-events-none absolute inset-0 mx-auto flex max-w-[1400px] flex-col justify-start px-5 pt-24 sm:justify-center sm:px-8 sm:pt-0"
           style={{ opacity: heroFade, transform: `translateY(${(1 - heroFade) * -24}px)` }}
         >
           <div className="max-w-2xl">
