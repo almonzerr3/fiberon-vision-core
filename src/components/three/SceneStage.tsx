@@ -2,64 +2,10 @@ import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { Environment, Lightformer, Html, AdaptiveDpr } from "@react-three/drei";
 import * as THREE from "three";
-import { CctvCamera, HOTSPOT_ANCHORS } from "./CctvCamera";
+import { CctvCamera } from "./CctvCamera";
+import { HOTSPOTS, HOTSPOT_ANCHORS, type HotspotKey } from "@/lib/camera-hotspots";
 import { NetworkField } from "./NetworkField";
 import { useIsMobile } from "@/hooks/use-mobile";
-
-export type HotspotKey = "lens" | "ir" | "housing" | "mount";
-
-export const HOTSPOTS: {
-  key: HotspotKey;
-  index: string;
-  title: string;
-  note: string;
-  spec: [string, string][];
-}[] = [
-  {
-    key: "lens",
-    index: "01",
-    title: "Lens",
-    note: "Optical block reference point — motorised varifocal assembly with IP-rated front glass.",
-    spec: [
-      ["Type", "Varifocal, motorised"],
-      ["Aperture", "Placeholder — from product data"],
-      ["Focus", "Auto / remote back-focus"],
-    ],
-  },
-  {
-    key: "ir",
-    index: "02",
-    title: "IR illumination",
-    note: "Ring of infrared emitters for zero-lux operation with adaptive power control.",
-    spec: [
-      ["Emitters", "Ring array"],
-      ["Range", "Placeholder — from product data"],
-      ["Control", "Adaptive, per-zone"],
-    ],
-  },
-  {
-    key: "housing",
-    index: "03",
-    title: "Housing",
-    note: "Sealed metal barrel and sunshield for outdoor perimeter and industrial environments.",
-    spec: [
-      ["Material", "Die-cast metal"],
-      ["Sealing", "Weather-rated enclosure"],
-      ["Shield", "Integrated sun / rain hood"],
-    ],
-  },
-  {
-    key: "mount",
-    index: "04",
-    title: "Mount",
-    note: "Articulated bracket with concealed cable routing through the wall plate gland.",
-    spec: [
-      ["Fixing", "4-point wall plate"],
-      ["Adjust", "Pan / tilt knuckle"],
-      ["Cabling", "Concealed gland exit"],
-    ],
-  },
-];
 
 function Rig({
   progress,

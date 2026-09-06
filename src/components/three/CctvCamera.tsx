@@ -8,13 +8,6 @@ import * as THREE from "three";
  * mesh tree later without touching the surrounding scene or hotspot anchors.
  */
 
-export const HOTSPOT_ANCHORS: Record<string, [number, number, number]> = {
-  lens: [0.0, 0.06, 1.28],
-  ir: [0.34, 0.34, 1.02],
-  housing: [-0.44, 0.2, -0.1],
-  mount: [0.1, -0.72, -0.62],
-};
-
 function useMaterials() {
   return useMemo(() => {
     const housing = new THREE.MeshStandardMaterial({
