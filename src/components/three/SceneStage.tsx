@@ -156,6 +156,7 @@ export function SceneStage({
       <group position={[isMobile ? 0 : 0.4, isMobile ? 0 : 0.15, 0]}>
         <CctvCamera pointer={pointer} lowDetail={isMobile} />
         {ready &&
+          hotspotsVisible &&
           HOTSPOTS.map((h) => (
             <Hotspot
               key={h.key}

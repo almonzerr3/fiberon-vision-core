@@ -34,6 +34,14 @@ export function NetworkField({
         ),
         kind: i % 5 === 0 ? 1 : 0,
       });
+      // Keep the field clear of the camera study at the centre of the stage.
+      const n = nodes[nodes.length - 1]!;
+      const radial = Math.hypot(n.p.x, n.p.z);
+      if (radial < 2.9) {
+        const k = 2.9 / Math.max(radial, 0.001);
+        n.p.x *= k;
+        n.p.z *= k;
+      }
     }
     const core = new THREE.Vector3(0, 0.1, 0.4);
     const segs: number[] = [];
