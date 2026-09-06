@@ -118,8 +118,8 @@ export function NetworkField({
       ))}
 
       {/* recording / analytics core */}
-      <mesh position={[0, 0.1, 0.4]}>
-        <boxGeometry args={[0.9, 0.5, 0.6]} />
+      <mesh position={[-2.6, -1.55, 1.1]}>
+        <boxGeometry args={[0.85, 0.42, 0.55]} />
         <meshStandardMaterial color="#4a545c" metalness={0.9} roughness={0.32} />
       </mesh>
     </group>
