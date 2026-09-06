@@ -22,15 +22,15 @@ function Rig({
     const pull = THREE.MathUtils.smoothstep(p, 0.34, 0.9);
     const pt = pointer.current ?? { x: 0, y: 0 };
     target.set(
-      THREE.MathUtils.lerp(2.7, 0.4, pull) + pt.x * 0.4,
-      THREE.MathUtils.lerp(1.0, 2.0, pull) - pt.y * 0.3,
-      THREE.MathUtils.lerp(4.6, 9.4, pull),
+      THREE.MathUtils.lerp(2.2, 0.4, pull) + pt.x * 0.4,
+      THREE.MathUtils.lerp(1.2, 2.0, pull) - pt.y * 0.3,
+      THREE.MathUtils.lerp(5.5, 9.4, pull),
     );
     const k = 1 - Math.exp(-3 * delta);
     camera.position.lerp(target, k);
     camera.lookAt(
-      THREE.MathUtils.lerp(-1.5, 0, pull),
-      THREE.MathUtils.lerp(0.3, -0.1, pull),
+      THREE.MathUtils.lerp(-0.85, 0, pull),
+      THREE.MathUtils.lerp(0.35, -0.1, pull),
       0,
     );
   });
@@ -110,7 +110,7 @@ export function SceneStage({
       shadows={!isMobile}
       dpr={isMobile ? [1, 1.4] : [1, 2]}
       gl={{ antialias: !isMobile, powerPreference: "high-performance" }}
-      camera={{ position: [2.7, 1.0, 4.6], fov: 38 }}
+      camera={{ position: [2.2, 1.2, 5.5], fov: 38 }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
         gl.toneMappingExposure = 1.28;
@@ -153,7 +153,7 @@ export function SceneStage({
       <NetworkField progress={progress} lowDetail={isMobile} />
 
       {/* The camera study sits right of centre so hero copy keeps the left column. */}
-      <group position={[isMobile ? 0 : 1.15, 0, 0]}>
+      <group position={[isMobile ? 0 : 0.4, isMobile ? 0 : 0.15, 0]}>
         <CctvCamera pointer={pointer} lowDetail={isMobile} />
         {ready &&
           HOTSPOTS.map((h) => (
