@@ -147,13 +147,7 @@ export function CctvCamera({
 
       {/* camera head ----------------------------------------------------- */}
       <group ref={head} position={[0, 0.1, 0]}>
-        {/* main barrel */}
-        <mesh castShadow receiveShadow>
-          <cylinderGeometry args={[0.4, 0.4, 1.9, seg]} rotation-x={Math.PI / 2} />
-          <primitive object={m.housing} attach="material" />
-          <group />
-        </mesh>
-        {/* rotate barrel to face +Z */}
+        {/* main barrel, rotated to face +Z */}
         <group rotation-x={Math.PI / 2}>
           <mesh castShadow receiveShadow>
             <cylinderGeometry args={[0.4, 0.4, 1.9, seg]} />
