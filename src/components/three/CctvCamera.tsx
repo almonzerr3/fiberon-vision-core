@@ -11,17 +11,17 @@ import * as THREE from "three";
 function useMaterials() {
   return useMemo(() => {
     const housing = new THREE.MeshStandardMaterial({
-      color: "#2b3035",
-      metalness: 0.92,
-      roughness: 0.38,
+      color: "#5a626a",
+      metalness: 0.72,
+      roughness: 0.42,
     });
     const shield = new THREE.MeshStandardMaterial({
-      color: "#3a4046",
-      metalness: 0.85,
-      roughness: 0.45,
+      color: "#6e767e",
+      metalness: 0.7,
+      roughness: 0.5,
     });
     const trim = new THREE.MeshStandardMaterial({
-      color: "#15181b",
+      color: "#262b30",
       metalness: 0.6,
       roughness: 0.6,
     });
@@ -195,10 +195,10 @@ export function CctvCamera({
         </group>
 
         {/* sun shield */}
-        <group position={[0, 0.3, 0.02]}>
+        <group position={[0, 0, 0.02]}>
           <mesh rotation-x={Math.PI / 2} castShadow>
             <cylinderGeometry
-              args={[0.43, 0.43, 1.55, seg, 1, true, Math.PI * 0.1, Math.PI * 0.8]}
+              args={[0.41, 0.41, 1.5, seg, 1, true, Math.PI * 0.12, Math.PI * 0.76]}
             />
             <primitive object={m.shield} attach="material" />
           </mesh>
