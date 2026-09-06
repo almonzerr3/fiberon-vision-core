@@ -75,7 +75,7 @@ function Floor() {
   return (
     <mesh rotation-x={-Math.PI / 2} position={[0, -2.1, 0]} receiveShadow>
       <planeGeometry args={[60, 60]} />
-      <meshStandardMaterial color="#14171a" metalness={0.2} roughness={0.85} />
+      <meshStandardMaterial color="#191d21" metalness={0.2} roughness={0.8} />
     </mesh>
   );
 }
@@ -113,20 +113,21 @@ export function SceneStage({
       camera={{ position: [2.7, 1.0, 4.6], fov: 38 }}
       onCreated={({ gl }) => {
         gl.toneMapping = THREE.ACESFilmicToneMapping;
-        gl.toneMappingExposure = 1.05;
+        gl.toneMappingExposure = 1.28;
       }}
     >
       <color attach="background" args={["#0d1013"]} />
       <fog attach="fog" args={["#0d1013", 12, 26]} />
-      <ambientLight intensity={0.35} />
+      <ambientLight intensity={0.55} />
       <directionalLight
         position={[4, 6, 5]}
-        intensity={2.1}
+        intensity={3.0}
         castShadow={!isMobile}
         shadow-mapSize-width={1024}
         shadow-mapSize-height={1024}
       />
-      <directionalLight position={[-5, 2, -3]} intensity={0.5} color="#9dc4dc" />
+      <directionalLight position={[-5, 2, -3]} intensity={1.1} color="#9dc4dc" />
+      <spotLight position={[-3, 1.2, 6]} angle={0.7} penumbra={1} intensity={22} color="#cfe4f2" />
 
       <Suspense fallback={null}>
         <Environment resolution={128}>
@@ -149,20 +150,23 @@ export function SceneStage({
       </Suspense>
 
       {!isMobile && <Floor />}
-      <CctvCamera pointer={pointer} lowDetail={isMobile} />
       <NetworkField progress={progress} lowDetail={isMobile} />
 
-      {ready &&
-        HOTSPOTS.map((h) => (
-          <Hotspot
-            key={h.key}
-            anchor={HOTSPOT_ANCHORS[h.key] as [number, number, number]}
-            index={h.index}
-            active={active === h.key}
-            visible={hotspotsVisible}
-            onSelect={() => setActive(h.key)}
-          />
-        ))}
+      {/* The camera study sits right of centre so hero copy keeps the left column. */}
+      <group position={[isMobile ? 0 : 1.15, 0, 0]}>
+        <CctvCamera pointer={pointer} lowDetail={isMobile} />
+        {ready &&
+          HOTSPOTS.map((h) => (
+            <Hotspot
+              key={h.key}
+              anchor={HOTSPOT_ANCHORS[h.key] as [number, number, number]}
+              index={h.index}
+              active={active === h.key}
+              visible={hotspotsVisible}
+              onSelect={() => setActive(h.key)}
+            />
+          ))}
+      </group>
 
       <Rig progress={progress} pointer={pointer} />
       <AdaptiveDpr pixelated />
